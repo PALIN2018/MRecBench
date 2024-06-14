@@ -1,0 +1,7 @@
+torch==2.0.0
+numpy
+pandas
+transformers
+tqdm
+openai==1.23.2
+anthropic==0.25.7
