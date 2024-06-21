@@ -1,5 +1,0 @@
-{
-    "3637": {
-        "retry_error": "Error code: 500 - {'status': 500, 'message': '\u8bf7\u6c42\u5f02\u5e38', 'data': 'messages.0.content.0.image.source.base64: image cannot be empty (Service: BedrockRuntime, Status Code: 400, Request ID: aaed5bdd-61c3-4f0b-9140-b945360cc7dc)'}"
-    }
-}

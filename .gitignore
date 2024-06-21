@@ -9,7 +9,8 @@
 /LVLM4Rec/prompts/sampled_prompts
 /LVLM4Rec/prompts/sampled_photos
 /notebooks/
+/LVLM4Rec/results/
 .DS_Store
 *.py[cod]
 __pycache__/
-/LVLM4Rec/results/output_s1_0529/
+/LVLM4Rec/results/
