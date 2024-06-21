@@ -12,3 +12,4 @@
 .DS_Store
 *.py[cod]
 __pycache__/
+/LVLM4Rec/results/output_s1_0529/
