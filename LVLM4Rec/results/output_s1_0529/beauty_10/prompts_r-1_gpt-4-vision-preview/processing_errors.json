@@ -1,0 +1,11 @@
+{
+    "2898": {
+        "retry_error": "Error code: 400 - {'error': {'inner_error': {'code': 'ResponsibleAIPolicyViolation', 'content_filter_results': {'jailbreak': {'filtered': True, 'detected': True}}}, 'code': 'content_filter', 'message': \"The response was filtered due to the prompt triggering Azure OpenAI's content management policy. Please modify your prompt and retry. To learn more about our content filtering policies please read our documentation: \\r\\nhttps://go.microsoft.com/fwlink/?linkid=2198766.\", 'param': 'prompt', 'type': None}}"
+    },
+    "20059": {
+        "retry_error": "Error code: 400 - {'error': {'inner_error': {'code': 'ResponsibleAIPolicyViolation', 'content_filter_results': {'jailbreak': {'filtered': True, 'detected': True}}}, 'code': 'content_filter', 'message': \"The response was filtered due to the prompt triggering Azure OpenAI's content management policy. Please modify your prompt and retry. To learn more about our content filtering policies please read our documentation: \\r\\nhttps://go.microsoft.com/fwlink/?linkid=2198766.\", 'param': 'prompt', 'type': None}}"
+    },
+    "19024": {
+        "retry_error": "Error code: 400 - {'error': {'inner_error': {'code': 'ResponsibleAIPolicyViolation', 'content_filter_results': {'jailbreak': {'filtered': True, 'detected': True}}}, 'code': 'content_filter', 'message': \"The response was filtered due to the prompt triggering Azure OpenAI's content management policy. Please modify your prompt and retry. To learn more about our content filtering policies please read our documentation: \\r\\nhttps://go.microsoft.com/fwlink/?linkid=2198766.\", 'param': 'prompt', 'type': None}}"
+    }
+}
