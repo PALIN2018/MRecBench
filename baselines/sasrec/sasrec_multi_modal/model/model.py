@@ -11,7 +11,13 @@ class Model(torch.nn.Module):
         self.args = args
         self.max_seq_len = args.max_seq_len + 1
 
-        self.fc = MLP_Layers(word_embedding_dim=1280,
+        word_embedding_dim = 768
+        if args.modal == "img_title":
+            word_embedding_dim = 1280
+        elif args.modal == "img":
+            word_embedding_dim = 512
+
+        self.fc = MLP_Layers(word_embedding_dim=word_embedding_dim,
                                  item_embedding_dim=args.embedding_dim,
                                  layers=[args.embedding_dim] * (args.dnn_layer + 1),
                                  drop_rate=args.drop_rate)
@@ -42,7 +48,7 @@ class Model(torch.nn.Module):
         return scores
 
     def forward(self, sample_items, log_mask, local_rank):
-        # sample_items: batch*max_seq_len*2, 1024
+        # sample_items: batch*max_seq_len*2, dim
         input_embs_all = self.fc(sample_items) # batch*max_seq_len*2, dim
         input_embs = input_embs_all.view(-1, self.max_seq_len, 2, self.args.embedding_dim) # batch, max_seq_len, 2, dim
         pos_items_embs = input_embs[:, :, 0] # batch, max_seq_len, dim

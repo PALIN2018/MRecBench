@@ -17,7 +17,6 @@ torchrun --nproc_per_node 1 --master_port 1234 run.py \
 --lr 1e-3 \
 --embedding_dim 512 \
 --dnn_layer 8 \
---news_attributes title \
 --num_words_abstract 128 \
 --bert_model_load bert_base_uncased \
 --epoch 150 \

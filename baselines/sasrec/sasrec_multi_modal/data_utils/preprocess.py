@@ -114,19 +114,16 @@ def read_news_bert(news_path, args, tokenizer):
             doc_name, title, abstract = splited
             abstract = abstract.replace("<br>", "\n")
 
-            if 'title' in args.news_attributes:
+            if args.modal in ("title", "img", "img_title"):
                 title = tokenizer(title.lower(), max_length=30, padding='max_length', truncation=True)
+            elif args.modal in ("title_desc", ):
+                title = tokenizer(title.lower()+"\n"+abstract.lower(), max_length=args.num_words_abstract, padding='max_length', truncation=True)
             else:
                 title = []
 
-            if 'abstract' in args.news_attributes:
-                abstract = tokenizer(title.lower()+"\n"+abstract.lower(), max_length=args.num_words_abstract, padding='max_length', truncation=True)
-            else:
-                abstract = []
-
             item_name_to_id[doc_name] = item_id
             item_id_to_name[item_id] = doc_name
-            item_id_to_dic[item_id] = [title, abstract, []]
+            item_id_to_dic[item_id] = [title, [], []]
             item_id += 1
     return item_id_to_dic, item_name_to_id, item_id_to_name
 

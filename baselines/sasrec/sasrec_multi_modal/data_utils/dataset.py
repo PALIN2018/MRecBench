@@ -9,13 +9,14 @@ import os
 
 
 class BuildTrainDataset(Dataset):
-    def __init__(self, u2seq, user_neg_dic, item_content, img_data, item_num, max_seq_len):
+    def __init__(self, u2seq, user_neg_dic, item_content, img_data, item_num, max_seq_len, modal):
         self.u2seq = u2seq # {user_id, history}
         self.item_content = item_content # item_num, 512
         self.img_data = img_data # item_num, 512
         self.item_num = item_num
         self.user_neg_dic = user_neg_dic
         self.max_seq_len = max_seq_len + 1
+        self.modal = modal
 
     def __len__(self):
         return len(self.u2seq)
@@ -35,18 +36,27 @@ class BuildTrainDataset(Dataset):
         sample_items.append(neg_items) # 2, max_seq_len
         sample_items = torch.LongTensor(np.array(sample_items)).transpose(0, 1) # max_seq_len, 2
         text_emb_items = self.item_content[sample_items] # max_seq_len, 2, 512
-        img_emb_items = torch.tensor(self.img_data[sample_items]) # max_seq_len, 2, 512
-        return torch.cat([text_emb_items, img_emb_items], dim=-1), torch.FloatTensor(log_mask)
+        if self.modal in ("title", "title_desc"):
+            return text_emb_items, torch.FloatTensor(log_mask)
+        elif self.modal == "img_title":
+            img_emb_items = torch.tensor(self.img_data[sample_items]) # max_seq_len, 2, 512
+            return torch.cat([text_emb_items, img_emb_items], dim=-1), torch.FloatTensor(log_mask)
+        elif self.modal == "img":
+            img_emb_items = torch.tensor(self.img_data[sample_items]) # max_seq_len, 2, 512
+            return img_emb_items, torch.FloatTensor(log_mask)
+        else:
+            raise RuntimeError(f"error {self.modal} modal!!")
 
 class BuildTestDataset(Dataset):
     def __init__(self, u2seq, user_neg_dic, item_content, img_data, item_num, max_seq_len, 
-                 test_user_name_set, user_name_to_id):
+                 test_user_name_set, user_name_to_id, modal):
         self.u2seq = u2seq # {user_id, history}
         self.item_content = item_content # item_num, 512
         self.img_data = img_data
         self.item_num = item_num
         self.user_neg_dic = user_neg_dic
         self.max_seq_len = max_seq_len + 1
+        self.modal = modal
 
         self.user_seqs = []
         test_user_id_set = set()
@@ -81,10 +91,21 @@ class BuildTestDataset(Dataset):
         log_mask = torch.FloatTensor(log_mask)
         text_input_seq = self.item_content[input_seq]
         text_candidates = self.item_content[candidates]
-        img_input_seq = torch.tensor(self.img_data[input_seq])
-        img_candidates = torch.tensor(self.img_data[candidates])
-        input_seq = torch.cat([text_input_seq, img_input_seq], dim=-1)
-        candidates = torch.cat([text_candidates, img_candidates], dim=-1)
+        if self.modal in ("title", "title_desc"):
+            input_seq = text_input_seq
+            candidates = text_candidates
+        elif self.modal == "img":
+            img_input_seq = torch.tensor(self.img_data[input_seq])
+            img_candidates = torch.tensor(self.img_data[candidates])
+            input_seq = img_input_seq
+            candidates = img_candidates
+        elif self.modal == "img_title":
+            img_input_seq = torch.tensor(self.img_data[input_seq])
+            img_candidates = torch.tensor(self.img_data[candidates])
+            input_seq = torch.cat([text_input_seq, img_input_seq], dim=-1)
+            candidates = torch.cat([text_candidates, img_candidates], dim=-1)
+        else:
+            raise RuntimeError(f"error {self.modal} modal!!")
         return input_seq, candidates, log_mask, user_id, candidates_id
 
 
