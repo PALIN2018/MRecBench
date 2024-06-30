@@ -14,6 +14,7 @@ def parse_args():
     parser.add_argument("--negs", type=str, default='mind_large_news_base.tsv')
     parser.add_argument("--test_users", type=str, default='mind_large_news_base.tsv')
     parser.add_argument("--user_test", type=str, default='all')
+    parser.add_argument("--modal", type=str, default="img_text") # img, title, img_title, title_desc
 
     # ============== train parameters ==============
     parser.add_argument("--batch_size", type=int, default=64)
