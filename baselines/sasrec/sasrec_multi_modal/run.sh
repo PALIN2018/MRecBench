@@ -1,5 +1,5 @@
 torchrun --nproc_per_node 1 --master_port 1234 run.py \
---root_data_dir ../../ \
+--root_data_dir MRecBench/ \
 --dataset data/beauty \
 --behaviors beauty_users.tsv \
 --news beauty_items_gpt4.tsv \

@@ -46,6 +46,11 @@ For more details on the dataset, including how to obtain it, examples, and stati
 MRecBench/
 ├── baselines/
 │   └── sasrec/
+├── data/
+│   ├── beauty/
+│   ├── sports/
+│   ├── toys/
+│   └── clothing/
 ├── datasets/
 │   ├── img/
 │   │   ├── len_dist.png
