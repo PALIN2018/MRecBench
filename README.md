@@ -46,15 +46,15 @@ For more details on the dataset, including how to obtain it, examples, and stati
 MRecBench/
 ├── baselines/
 │   └── sasrec/
-├── data/
-│   ├── beauty/
-│   ├── sports/
-│   ├── toys/
-│   └── clothing/
 ├── datasets/
 │   ├── img/
 │   │   ├── len_dist.png
 │   │   └── word_cloud.png
+│   ├── data/
+│   │   ├── beauty/
+│   │   ├── sports/
+│   │   ├── toys/
+│   │   └── clothing/
 │   └── README.md
 ├── LVLM4Rec/
 │   ├── prompts/
@@ -109,7 +109,6 @@ To obtain SASRec-based recommendation results (for S2 and other SASRec variants)
    cd baselines/sasrec
    ```
 2. Follow the instructions in the README file within this directory to train and evaluate SASRec.
-https://github.com/PALIN2018/MRecBench/blob/feature-sasrec/baselines/sasrec/README.md
 
 ## Contact
 If you have any questions about our dataset or benchmark results, please feel free to contact us!

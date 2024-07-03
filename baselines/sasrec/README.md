@@ -9,15 +9,16 @@ pip install -r requirements.txt
 Download data.tar.gz from the following link, then unzip the file into the root directory of git.
 Data: https://drive.google.com/file/d/1FR0enWgGN39WWl7owLz_AKlua8eiqbEM/view?usp=sharing
 ```bash
+cd datasets
 tar -zxvf data.tar.gz
 ```
 ## 3. Start the Training Scripts
-### 3.1 train sasRec with modal base
-Please use the --modal command to change the training mode. The modal option can be selected from (img, img_title, title, title_desc). The --news command allows the selection of files produced by different multimodal models. The --user_test command can choose to test either 400 selected users or all users. If you want to change the dataset, you can modify the command's "beaury", and the dataset selections available are (beaury, clothing, sports, toys).
+### 3.1 train sasRec with ID-agnostic indexing
+Please use the --modal command to change the training mode. The modal option can be selected from (img, img_title, title, title_desc). The --news command allows the selection of files produced by different multimodal models. The --user_test command can choose to test either 400 selected users or all users. If you want to change the dataset, you can modify the command's "beauty", and the dataset selections available are (beauty, clothing, sports, toys).
 ```bash
 cd sasrec/sasrec_multi_modal
 torchrun --nproc_per_node 1 --master_port 1234 run.py \
---root_data_dir MRecBench/ \
+--root_data_dir MRecBench/datasets \
 --dataset data/beauty \
 --behaviors beauty_users.tsv \
 --news beauty_items_gpt4.tsv \
@@ -42,11 +43,11 @@ torchrun --nproc_per_node 1 --master_port 1234 run.py \
 --user_test \'400\'
 --modal "img_title"
 ```
-### 3.2 train sasRec with ID base
+### 3.2 train sasRec with ID-based indexing
 ```bash
 cd sasrec/sasrec_id_base
 torchrun --nproc_per_node 1 --master_port 1234 run.py \
---root_data_dir MRecBench/ \
+--root_data_dir MRecBench/datasets \
 --dataset data/beauty \
 --behaviors beauty_users.tsv \
 --news beauty_items.tsv \

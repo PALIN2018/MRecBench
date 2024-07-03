@@ -72,7 +72,7 @@ def train(args, local_rank):
     news_abstract, news_abstract_attmask, \
     news_body, news_body_attmask = get_doc_input_bert(item_id_to_dic, args)
 
-    print("处理img数据")
+    print("process img data...")
     if args.modal in ("img", "img_title"):
         img_data = get_img_data(item_name_to_id, args) # item_num+1, 512
     else:
