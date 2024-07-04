@@ -1,8 +1,8 @@
 torchrun --nproc_per_node 1 --master_port 1234 run.py \
---root_data_dir ../../ \
+--root_data_dir MRecBench/ \
 --dataset data/beauty \
 --behaviors beauty_users.tsv \
---news beauty_items.tsv \
+--news beauty_items_gpt4.tsv \
 --negs beauty_negs.tsv \
 --test_users beauty_test_user_name.txt \
 --mode train \
@@ -17,7 +17,7 @@ torchrun --nproc_per_node 1 --master_port 1234 run.py \
 --lr 1e-3 \
 --embedding_dim 512 \
 --dnn_layer 8 \
---news_attributes title \
+--num_words_abstract 128 \
 --bert_model_load bert_base_uncased \
 --epoch 150 \
 --fine_tune_lr 0 \

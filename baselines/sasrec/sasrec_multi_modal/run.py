@@ -72,8 +72,11 @@ def train(args, local_rank):
     news_abstract, news_abstract_attmask, \
     news_body, news_body_attmask = get_doc_input_bert(item_id_to_dic, args)
 
-    print("处理img数据")
-    img_data = get_img_data(item_name_to_id, args) # item_num+1, 512
+    print("process img data...")
+    if args.modal in ("img", "img_title"):
+        img_data = get_img_data(item_name_to_id, args) # item_num+1, 512
+    else:
+        img_data = None
 
     item_content = np.concatenate([
         x for x in
@@ -90,7 +93,7 @@ def train(args, local_rank):
 
     print('build dataset...')
     train_dataset = BuildTrainDataset(u2seq=users_train, user_neg_dic=user_neg_dic, item_content=item_word_embs, img_data=img_data, item_num=item_num,
-                                      max_seq_len=args.max_seq_len)
+                                      max_seq_len=args.max_seq_len, modal=args.modal)
 
     print('build DDP sampler...')
     train_sampler = torch.utils.data.distributed.DistributedSampler(train_dataset)
@@ -267,7 +270,7 @@ def run_test(users_test, item_word_embs, users_history_for_test, item_num, local
     for k in user_name_to_id:
         user_id_to_name[user_name_to_id[k]] = k
     dataset = BuildTestDataset(users_test, user_neg_dic, item_word_embs, img_data, item_num, args.max_seq_len, 
-                               test_user_name_set, user_name_to_id)
+                               test_user_name_set, user_name_to_id, args.modal)
     dataloader = DataLoader(dataset=dataset, batch_size=16, num_workers=4, shuffle=False)
     model.eval()
     scores = []

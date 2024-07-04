@@ -50,6 +50,11 @@ MRecBench/
 │   ├── img/
 │   │   ├── len_dist.png
 │   │   └── word_cloud.png
+│   ├── data/
+│   │   ├── beauty/
+│   │   ├── sports/
+│   │   ├── toys/
+│   │   └── clothing/
 │   └── README.md
 ├── LVLM4Rec/
 │   ├── prompts/
@@ -104,7 +109,6 @@ To obtain SASRec-based recommendation results (for S2 and other SASRec variants)
    cd baselines/sasrec
    ```
 2. Follow the instructions in the README file within this directory to train and evaluate SASRec.
-
 
 ## Contact
 If you have any questions about our dataset or benchmark results, please feel free to contact us!

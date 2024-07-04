@@ -1,5 +1,7 @@
 import numpy as np
 import torch
+import os
+from tqdm import tqdm
 
 
 def read_behaviors(behaviors_path, neg_path, before_item_id_to_dic, before_item_name_to_id, before_item_id_to_name, max_seq_len, min_seq_len, Log_file):
@@ -81,7 +83,7 @@ def read_behaviors(behaviors_path, neg_path, before_item_id_to_dic, before_item_
             user_neg_dic[user_name_to_id[user_name]] = [item_id_before_to_now[neg_id] for neg_id in user_neg_before_id_dic[user_name]]
 
     return item_num, item_id_to_dic, users_train, users_valid, users_test, \
-           users_history_for_valid, users_history_for_test, item_name_to_id, user_name_to_id, user_neg_dic
+           users_history_for_valid, users_history_for_test, item_name_to_id, user_name_to_id, user_neg_dic, item_id_before_to_now
 
 
 def read_news(news_path):
@@ -111,20 +113,17 @@ def read_news_bert(news_path, args, tokenizer):
             # print(splited)
             doc_name, title, abstract = splited
             abstract = abstract.replace("<br>", "\n")
-            if 'title' in args.news_attributes:
-                title = tokenizer(title.lower(), max_length=args.num_words_title, padding='max_length', truncation=True)
+
+            if args.modal in ("title", "img", "img_title"):
+                title = tokenizer(title.lower(), max_length=30, padding='max_length', truncation=True)
+            elif args.modal in ("title_desc", ):
+                title = tokenizer(title.lower()+"\n"+abstract.lower(), max_length=args.num_words_abstract, padding='max_length', truncation=True)
             else:
                 title = []
 
-            if 'abstract' in args.news_attributes:
-                abstract = tokenizer(abstract.lower(), max_length=args.num_words_abstract, padding='max_length', truncation=True)
-            else:
-                abstract = []
-
-            body = []
             item_name_to_id[doc_name] = item_id
             item_id_to_name[item_id] = doc_name
-            item_id_to_dic[item_id] = [title, abstract, body]
+            item_id_to_dic[item_id] = [title, [], []]
             item_id += 1
     return item_id_to_dic, item_name_to_id, item_id_to_name
 
@@ -163,5 +162,14 @@ def get_doc_input_bert(item_id_to_content, args):
     return news_title, news_title_attmask, \
         news_abstract, news_abstract_attmask, \
         news_body, news_body_attmask
+
+def get_img_data(item_name_to_id, args):
+    item_id_to_name = {item_name_to_id[k]: k for k in item_name_to_id}
+    item_num = len(item_name_to_id)+1
+    img_data = np.zeros((item_num, 512), dtype='float32')
+    ls = [np.zeros((1, 512), dtype="float32")]
+    for i in tqdm(range(1, item_num)):
+        ls.append(np.load(os.path.join(f"{args.root_data_dir}/{args.dataset}/features/", item_id_to_name[i] + '.npy')))
+    return np.concatenate(ls, axis=0)
 
 
